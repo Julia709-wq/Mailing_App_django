@@ -1,0 +1,24 @@
+{% extends 'mailing_app/base.html' %}
+
+{% block title %}Удаление рассылки{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <div class="form-box">
+        <h1 class="form-title">Удалить рассылку</h1>
+
+        <div class="delete-confirmation">
+            <p class="delete-message">Вы уверены, что хотите удалить рассылку?</p>
+
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <div class="form-buttons">
+                    <button type="submit" class="delete-confirm-btn">Удалить</button>
+                    <a href="{% url 'mailing_app:mailings_list' %}" class="cancel-btn">Отмена</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

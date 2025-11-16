@@ -1,0 +1,816 @@
+/* Общие стили */
+body {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    font-family: 'Raleway', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* Стили для главной страницы */
+.main-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.main-title {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 3.5rem;
+    font-weight: 600;
+    color: white;
+    text-align: center;
+    margin-bottom: 2rem;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    letter-spacing: 1px;
+}
+
+.menu-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    width: 100%;
+    max-width: 320px;
+}
+
+.menu-btn {
+    background: #50C878;
+    border: none;
+    border-radius: 12px;
+    padding: 14px 30px;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: white;
+    text-decoration: none;
+    text-align: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    font-family: 'Raleway', sans-serif;
+    min-height: 50px;
+    min-width: 140px;
+}
+
+.menu-btn:hover {
+    background: #40B868;
+    transform: translateY(-2px);
+    color: white;
+}
+
+.menu-btn:active {
+    transform: translateY(0);
+}
+
+.cancel-btn {
+    background: #e74c3c;
+    border: none;
+    border-radius: 12px;
+    padding: 14px 30px;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: white;
+    text-decoration: none;
+    text-align: center;
+    transition: all 0.3s ease;
+    font-family: 'Raleway', sans-serif;
+    min-width: 140px;
+    min-height: 50px;
+}
+
+.cancel-btn:hover {
+    background: #c0392b;
+    transform: translateY(-2px);
+    color: white;
+    text-decoration: none;
+}
+
+.auth-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+    max-width: 320px;
+    margin-top: 3rem;
+}
+
+.auth-btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: 2px solid white;
+    border-radius: 12px;
+    padding: 14px 30px;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: white;
+    text-decoration: none;
+    text-align: center;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    font-family: 'Raleway', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 60px;
+}
+
+.auth-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+    color: white;
+}
+
+/* Стили для страницы получателей */
+.recipients-container {
+    min-height: 100vh;
+    padding: 40px 20px;
+}
+
+.recipients-title {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 2.8rem;
+    font-weight: 600;
+    color: white;
+    text-align: center;
+    margin-bottom: 2.5rem;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+/* Кнопка "Добавить получателя" на странице списка */
+.add-recipient-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2rem;
+}
+
+.add-recipient-btn {
+    background: #50C878;
+    border: none;
+    border-radius: 15px;
+    padding: 18px 30px;
+    font-size: 1.3rem;
+    font-weight: 500;
+    color: white;
+    text-decoration: none;
+    text-align: center;
+    transition: all 0.3s ease;
+    font-family: 'Raleway', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 70px;
+    max-width: 320px;
+    width: 100%;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.add-recipient-btn:hover {
+    background: #40B868;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+    color: white;
+    text-decoration: none;
+}
+
+.add-recipient-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2rem;
+}
+
+.recipients-table {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+    backdrop-filter: blur(10px);
+    margin-bottom: 2rem;
+}
+
+.table-header {
+    display: grid;
+    grid-template-columns: 2fr 2fr 3fr 1fr;
+    gap: 20px;
+    padding: 15px 20px;
+    background: #50C878;
+    color: white;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+}
+
+.table-row {
+    display: grid;
+    grid-template-columns: 2fr 2fr 3fr 1fr;
+    gap: 20px;
+    padding: 15px 20px;
+    background: white;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    align-items: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+}
+
+.table-row:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.table-cell {
+    padding: 8px 0;
+    color: #333;
+    word-break: break-word;
+}
+
+.edit-btn {
+    background: #50C878;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    color: white;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    text-align: center;
+    display: inline-block;
+    font-family: 'Raleway', sans-serif;
+}
+
+.edit-btn:hover {
+    background: #40B868;
+    transform: translateY(-1px);
+    color: white;
+    text-decoration: none;
+}
+
+.back-btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: 2px solid white;
+    border-radius: 12px;
+    padding: 12px 30px;
+    color: white;
+    text-decoration: none;
+    text-align: center;
+    transition: all 0.3s ease;
+    font-family: 'Raleway', sans-serif;
+    font-weight: 500;
+    display: inline-block;
+    margin-top: 20px;
+}
+
+.back-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+    color: white;
+    text-decoration: none;
+}
+
+.empty-message {
+    text-align: center;
+    color: white;
+    font-size: 1.2rem;
+    padding: 40px;
+}
+
+/* Стили для контейнера действий в таблице */
+.table-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+}
+
+/* Уменьшенные кнопки для таблицы */
+.table-edit-btn {
+    background: #50C878;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 16px;
+    color: white;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    text-align: center;
+    display: inline-block;
+    font-family: 'Raleway', sans-serif;
+    font-size: 0.9rem;
+    min-width: 100px;
+}
+
+.table-edit-btn:hover {
+    background: #40B868;
+    transform: translateY(-1px);
+    color: white;
+    text-decoration: none;
+}
+
+.table-delete-btn {
+    background: #e74c3c;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 16px;
+    color: white;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    text-align: center;
+    display: inline-block;
+    font-family: 'Raleway', sans-serif;
+    font-size: 0.9rem;
+    min-width: 100px;
+}
+
+.table-delete-btn:hover {
+    background: #c0392b;
+    transform: translateY(-1px);
+    color: white;
+    text-decoration: none;
+}
+
+/* Стили для формы */
+.form-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+}
+
+.form-box {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 15px;
+    padding: 40px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+    backdrop-filter: blur(10px);
+    max-width: 500px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.form-title {
+    font-family: 'Raleway', sans-serif;
+    font-size: 2.2rem;
+    font-weight: 600;
+    color: #333;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+/* Стили для form.as_p */
+form p {
+    margin-bottom: 1.5rem;
+}
+
+form label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: #333;
+    font-family: 'Raleway', sans-serif;
+}
+
+form input,
+form textarea,
+form select {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #e1e5e9;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: 'Raleway', sans-serif;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+
+form input:focus,
+form textarea:focus,
+form select:focus {
+    outline: none;
+    border-color: #50C878;
+    box-shadow: 0 0 0 3px rgba(80, 200, 120, 0.1);
+}
+
+form textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+/* Кнопки формы */
+.form-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
+.recipient-detail-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+}
+
+.recipient-detail-box {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 15px;
+    padding: 40px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+    backdrop-filter: blur(10px);
+    max-width: 600px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.recipient-detail-title {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 2.2rem;
+    font-weight: 600;
+    color: #333;
+    text-align: center;
+    margin-bottom: 2.5rem;
+}
+
+.recipient-info {
+    margin-bottom: 2rem;
+}
+
+.recipient-info-item {
+    margin-bottom: 1.5rem;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border-left: 4px solid #50C878;
+}
+
+.recipient-info-label {
+    font-weight: 600;
+    color: #333;
+    font-family: 'Raleway', sans-serif;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.recipient-info-value {
+    color: #555;
+    font-family: 'Raleway', sans-serif;
+    font-size: 1.1rem;
+}
+
+/* Кнопки действий */
+.recipient-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+}
+
+.recipient-name-link {
+    color: #333;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    padding: 5px 10px;
+    border-radius: 6px;
+    display: inline-block;
+}
+
+.recipient-name-link:hover {
+    color: #50C878;
+    background-color: rgba(80, 200, 120, 0.1);
+    text-decoration: none;
+    transform: translateY(-1px);
+}
+
+.delete-confirmation {
+    text-align: center;
+}
+
+.delete-message {
+    font-size: 1.2rem;
+    color: #333;
+    margin-bottom: 1rem;
+    font-family: 'Raleway', sans-serif;
+}
+
+.delete-email {
+    font-size: 1.1rem;
+    color: #666;
+    margin-bottom: 2rem;
+    font-family: 'Raleway', sans-serif;
+}
+
+.delete-confirm-btn {
+    background: #e74c3c;
+    border: none;
+    border-radius: 12px;
+    padding: 14px 30px;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: white;
+    text-decoration: none;
+    text-align: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    font-family: 'Raleway', sans-serif;
+    min-width: 140px;
+    min-height: 50px;
+}
+
+.delete-confirm-btn:hover {
+    background: #c0392b;
+    transform: translateY(-2px);
+    color: white;
+}
+
+.mailing-table {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+    backdrop-filter: blur(10px);
+    margin-bottom: 2rem;
+    overflow-x: auto; /* Горизонтальная прокрутка если не помещается */
+}
+
+.mailing-table .table-header,
+.mailing-table .table-row {
+    display: grid;
+    grid-template-columns: 140px 140px 120px 180px 200px 150px; /* Фиксированные ширины */
+    gap: 12px;
+    min-width: 940px; /* Минимальная ширина чтобы не ломалась структура */
+}
+
+.mailing-table .table-header {
+    padding: 15px 20px;
+    background: #50C878;
+    color: white;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.9rem; /* Уменьшенный шрифт */
+    margin-bottom: 15px;
+}
+
+.mailing-table .table-row {
+    padding: 12px 20px;
+    background: white;
+    border-radius: 10px;
+    margin-bottom: 8px;
+    align-items: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+    font-size: 0.9rem; /* Уменьшенный шрифт */
+}
+
+.mailing-table .table-row:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.recipient-tag {
+    display: inline-block;
+    background: #e3f2fd;
+    color: #1976d2;
+    padding: 1px 6px;
+    border-radius: 10px;
+    font-size: 0.75rem;
+    margin: 1px;
+    border: 1px solid #bbdefb;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 80px;
+}
+
+.no-recipients {
+    color: #999;
+    font-style: italic;
+    font-size: 0.8rem;
+}
+
+/* Уменьшенные кнопки действий для рассылок */
+.mailing-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: center;
+}
+
+.mailing-edit-btn {
+    background: #50C878;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 12px;
+    color: white;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    text-align: center;
+    display: inline-block;
+    font-family: 'Raleway', sans-serif;
+    font-size: 0.8rem;
+    min-width: 90px;
+}
+
+.mailing-delete-btn {
+    background: #e74c3c;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 12px;
+    color: white;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    text-align: center;
+    display: inline-block;
+    font-family: 'Raleway', sans-serif;
+    font-size: 0.8rem;
+    min-width: 90px;
+}
+
+.mailing-edit-btn:hover,
+.mailing-delete-btn:hover {
+    transform: translateY(-1px);
+    color: white;
+    text-decoration: none;
+}
+
+
+/* Стили для статусов */
+.status-created { color: #666; }
+.status-started { color: #50C878; font-weight: 600; }
+-status-completed { color: #2196F3; }
+.status-paused { color: #FF9800; }
+
+/* Улучшенный SelectMultiple */
+.form-select {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #e1e5e9;
+    border-radius: 8px;
+    font-family: 'Raleway', sans-serif;
+}
+
+.form-select:focus {
+    border-color: #50C878;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(80, 200, 120, 0.1);
+}
+
+.stats-card {
+    background-color: rgba(255, 255, 255, 0.2); /* Белый полупрозрачный фон */
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    padding: 15px 25px;
+    margin: 20px auto 30px auto;
+    text-align: center; /* Выравнивание по центру */
+    font-size: 2.1rem;
+    font-family: 'Raleway', sans-serif;
+    width: fit-content;
+    min-width: 280px;
+    min-height: 100px;
+}
+
+.stats-card p {
+    margin: 3px 0;
+    font-size: 18px;
+    font-weight: bold; /* Жирный шрифт */
+    color: #000000; /* Черный цвет текста */
+    text-align: center; /* Выравнивание по центру */
+}
+
+.stats-card strong {
+    color: #000000;
+    font-weight: bold;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .main-title {
+        font-size: 2.8rem;
+    }
+
+    .recipient-detail-box {
+        padding: 30px 20px;
+        margin: 0 10px;
+    }
+
+    .recipient-detail-title {
+        font-size: 1.8rem;
+    }
+
+    .recipient-actions {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .menu-btn {
+        padding: 16px 25px;
+        font-size: 1.2rem;
+        min-height: 65px;
+    }
+
+    .auth-btn {
+        padding: 12px 25px;
+        font-size: 1rem;
+        min-height: 55px;
+    }
+
+    .recipients-title {
+        font-size: 2.2rem;
+    }
+
+    .table-header,
+    .table-row {
+        grid-template-columns: 1fr;
+        gap: 10px;
+        text-align: center;
+    }
+
+    .table-header {
+        display: none;
+    }
+
+    .table-cell::before {
+        content: attr(data-label);
+        font-weight: 600;
+        display: block;
+        color: #50C878;
+        margin-bottom: 5px;
+    }
+
+    .form-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .menu-btn,
+    .cancel-btn {
+        min-width: 200px;
+    }
+
+    .delete-message {
+        font-size: 1.1rem;
+    }
+
+    .delete-email {
+        font-size: 1rem;
+    }
+
+    .form-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .delete-confirm-btn,
+    .cancel-btn {
+        min-width: 200px;
+    }
+
+    .mailing-table .table-header {
+        display: none;
+    }
+
+    .mailing-table .table-row {
+        grid-template-columns: 1fr;
+        gap: 8px;
+        text-align: center;
+        min-width: auto;
+    }
+
+    .table-cell::before {
+        content: attr(data-label);
+        font-weight: 600;
+        display: block;
+        color: #50C878;
+        margin-bottom: 3px;
+        font-size: 0.9rem;
+    }
+
+    .recipient-tag {
+        max-width: none;
+        display: block;
+        margin: 2px 0;
+    }
+
+    .mailing-actions {
+        flex-direction: row;
+        justify-content: center;
+        gap: 10px;
+    }
+}
+@media (max-width: 1200px) {
+    .mailing-table {
+        margin: 0 10px;
+    }
+}

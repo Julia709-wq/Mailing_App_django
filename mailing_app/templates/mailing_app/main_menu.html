@@ -1,0 +1,33 @@
+{% extends 'mailing_app/base.html' %}
+
+{% block title %}Главное меню{% endblock %}
+
+{% block content %}
+    <div class="main-container">
+        <h1 class="main-title">Главное меню</h1>
+
+        <div class="stats-card">
+            <p>Всего рассылок: <strong>{{ total_mailings }}</strong></p>
+            <p>Активных рассылок: <strong>{{ active_mailings }}</strong></p>
+            <p>Уникальных получателей: <strong>{{ unique_recipients }}</strong></p>
+        </div>
+
+        <div class="menu-buttons">
+            <a href="{% url 'mailing_app:recipient_list' %}" class="menu-btn">Получатели</a>
+            <a href="{% url 'mailing_app:messages_list' %}" class="menu-btn">Сообщения</a>
+            <a href="{% url 'mailing_app:mailings_list' %}" class="menu-btn">Рассылки</a>
+        </div>
+
+        {% if user.is_authenticated %}
+            <form method="post" action="{% url 'users:logout' %}">
+                {% csrf_token %}
+                <button type="submit" class="auth-btn">Выход</button>
+            </form>
+        {% else %}
+        <div class="auth-buttons">
+            <a href="{% url 'users:register' %}" class="auth-btn">Регистрация</a>
+            <a href="{% url 'users:login' %}" class="auth-btn">Вход</a>
+        </div>
+        {% endif %}
+    </div>
+{% endblock %}
