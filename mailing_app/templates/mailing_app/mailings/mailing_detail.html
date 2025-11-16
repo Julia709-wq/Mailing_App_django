@@ -1,0 +1,45 @@
+{% extends 'mailing_app/base.html' %}
+
+{% block title %}Информация о рассылке{% endblock %}
+
+{% block content %}
+<div class="recipient-detail-container">
+    <div class="recipient-detail-box">
+        <h1 class="recipient-detail-title">Информация о рассылке</h1>
+        <div class="recipient-info">
+            <div class="recipient-info-item">
+                <span class="recipient-info-label">Первая отправка:</span>
+                <span class="recipient-info-value">{{ mailing.first_sending }}</span>
+            </div>
+
+            <div class="recipient-info-item">
+                <span class="recipient-info-label">Окончание отправки:</span>
+                <span class="recipient-info-value">{{ mailing.finish_sending }}</span>
+            </div>
+
+            <div class="recipient-info-item">
+                <span class="recipient-info-label">Статус:</span>
+                <span class="recipient-info-value">{{ mailing.status }}</span>
+            </div>
+
+            <div class="recipient-info-item">
+                <span class="recipient-info-label">Сообщения:</span>
+                <span class="recipient-info-value">{{ mailing.message }}</span>
+            </div>
+
+            <div class="recipient-info-item">
+                <span class="recipient-info-label">Получатели:</span>
+                <span class="recipient-info-value">{{ mailing.recipients }}</span>
+            </div>
+
+        </div>
+
+        <div class="form-buttons">
+            {% if user == product.owner %}
+            <a href="{% url 'mailing_app:mailing_update' mailing.pk %}" class="menu-btn">Редактировать</a>
+            {% endif %}
+            <a href="{% url 'mailing_app:mailings_list' %}" class="menu-btn">Назад к списку</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

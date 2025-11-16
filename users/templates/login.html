@@ -1,0 +1,20 @@
+{% extends 'mailing_app/base.html' %}
+{% block title %}Вход{% endblock %}
+{% block content %}
+<div class="main-container">
+    <div class="form-box">
+        <h1 class="form-title">Вход в аккаунт</h1>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+
+                <button type="submit" class="menu-btn">Войти</button>
+                <a href="{% url 'mailing_app:main_menu' %}" class="cancel-btn">Отмена</a>
+            </form>
+    </div>
+    <p class="helper-text">
+        Нет аккаунта?
+        <a href="{% url 'users:register' %}">Создать</a>
+    </p>
+</div>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends 'mailing_app/base.html' %}
+
+{% block title %}Список сообщений{% endblock %}
+
+{% block content %}
+    <div class="recipients-container">
+        <h1 class="recipients-title">Список сообщений</h1>
+        <div class="add-recipient-container">
+            <a href="{% url 'mailing_app:message_create' %}" class="add-recipient-btn">Добавить сообщение</a>
+        </div>
+        <div class="recipients-table">
+            <div class="table-header">
+                <div>Тема</div>
+                <div>Содержание</div>
+            </div>
+
+            {% for message in messages %}
+            <div class="table-row">
+                <div class="table-cell" data-label="Тема">
+                    <a href="{% url 'mailing_app:message_detail' message.pk %}" class="recipient-name-link">
+                        {{ message.topic }}
+                    </a>
+                </div>
+                <div class="table-cell" data-label="Содержание">{{ message.body|truncatechars:20 }}</div>
+                {% if user == message.owner %}
+                <div class="table-cell" data-label="Действия">
+                    <div class="table-actions">
+                        <a href="{% url 'mailing_app:message_update' message.pk %}" class="edit-btn">Редактировать</a>
+                        <a href="{% url 'mailing_app:message_delete' message.pk %}" class="cancel-btn">Удалить</a>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+
+        <div style="text-align: center;">
+            <a href="{% url 'mailing_app:main_menu' %}" class="back-btn">Назад в главное меню</a>
+        </div>
+    </div>
+{% endblock %}

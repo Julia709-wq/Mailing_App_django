@@ -1,0 +1,19 @@
+{% extends 'mailing_app/base.html' %}
+
+{% block title %}Создать рассылку{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <div class="form-box">
+        <h1 class="form-title">Создать рассылку</h1>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <div class="form-buttons">
+                <button type="submit" class="menu-btn">Сохранить</button>
+                <a href="{% url 'mailing_app:mailings_list' %}" class="cancel-btn">Отмена</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

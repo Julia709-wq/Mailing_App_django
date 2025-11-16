@@ -1,0 +1,30 @@
+{% extends 'mailing_app/base.html' %}
+
+{% block title %}Информация о сообщении{% endblock %}
+
+{% block content %}
+<div class="recipient-detail-container">
+    <div class="recipient-detail-box">
+        <h1 class="recipient-detail-title">Информация о сообщении</h1>
+        <div class="recipient-info">
+            <div class="recipient-info-item">
+                <span class="recipient-info-label">Тема:</span>
+                <span class="recipient-info-value">{{ message.topic }}</span>
+            </div>
+
+            <div class="recipient-info-item">
+                <span class="recipient-info-label">Содержание:</span>
+                <span class="recipient-info-value">{{ message.body }}</span>
+            </div>
+
+        </div>
+
+        <div class="form-buttons">
+            {% if user == message.owner %}
+            <a href="{% url 'mailing_app:message_update' message.pk %}" class="menu-btn">Редактировать</a>
+            {% endif %}
+            <a href="{% url 'mailing_app:messages_list' %}" class="menu-btn">Назад к списку</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
