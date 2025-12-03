@@ -1,0 +1,38 @@
+{% extends 'mailing_app/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="main-container">
+    <h1 class="main-title">Статистика рассылок</h1>
+
+    <div class="stats-card">
+        <p>Всего попыток: <strong>{{ total_attempts }}</strong></p>
+        <p>Успешно: <strong>{{ successful_attempts }}</strong></p>
+        <p>Неуспешно: <strong>{{ failed_attempts }}</strong></p>
+    </div>
+
+    <div class="mailing-table">
+        <div class="table-header">
+            <div>Пользователь</div>
+            <div>Статус</div>
+            <div>Почта</div>
+            <div>Дата</div>
+        </div>
+
+        {% for attempt in attempts %}
+        <div class="table-row">
+            <div class="table-cell" data-label="Пользователь">{{ attempt.mailing.owner.email }}</div>
+            <div class="table-cell" data-label="Статус">{{ attempt.status }}</div>
+            <div class="table-cell" data-label="Почта">{{ attempt.recipient.email }}</div>
+            <div class="table-cell" data-label="Дата">{{ attempt.created_at|date:"d.m.Y H:i" }}</div>
+        </div>
+        {% empty %}
+        <p class="empty-message">Попыток рассылки пока нет.</p>
+        {% endfor %}
+    </div>
+
+    <div class="form-buttons">
+        <a href="{% url 'mailing_app:main_menu' %}" class="back-btn">Назад</a>
+    </div>
+</div>
+{% endblock %}

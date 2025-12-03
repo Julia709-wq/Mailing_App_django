@@ -814,3 +814,115 @@ form textarea {
         margin: 0 10px;
     }
 }
+
+/* ===== Стили для страниц восстановления пароля ===== */
+.password-reset-container,
+.password-reset-confirm-container,
+.email-verification-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+}
+
+.password-reset-box,
+.password-reset-confirm-box,
+.email-verification-box {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 15px;
+    padding: 40px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+    backdrop-filter: blur(10px);
+    max-width: 500px;
+    width: 100%;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.password-reset-title,
+.password-reset-confirm-title,
+.email-verification-title {
+    font-family: 'Raleway', sans-serif;
+    font-size: 2rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 2rem;
+}
+
+.password-reset-message,
+.password-reset-confirm-message,
+.email-verification-message {
+    font-family: 'Raleway', sans-serif;
+    font-size: 1.1rem;
+    color: #555;
+    margin-bottom: 2rem;
+}
+
+.password-reset-box form p,
+.password-reset-confirm-box form p {
+    margin-bottom: 1.5rem;
+}
+
+.password-reset-box form input,
+.password-reset-confirm-box form input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #e1e5e9;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: 'Raleway', sans-serif;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+
+.password-reset-box form input:focus,
+.password-reset-confirm-box form input:focus {
+    outline: none;
+    border-color: #50C878;
+    box-shadow: 0 0 0 3px rgba(80, 200, 120, 0.1);
+}
+
+/* Кнопки для восстановления и подтверждения */
+.password-reset-btn,
+.password-reset-confirm-btn,
+.email-verification-btn {
+    background: #50C878;
+    border: none;
+    border-radius: 12px;
+    padding: 14px 30px;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: white;
+    text-decoration: none;
+    text-align: center;
+    cursor: pointer;
+    font-family: 'Raleway', sans-serif;
+    transition: all 0.3s ease;
+    min-width: 140px;
+    min-height: 50px;
+}
+
+.password-reset-btn:hover,
+.password-reset-confirm-btn:hover,
+.email-verification-btn:hover {
+    background: #40B868;
+    transform: translateY(-2px);
+}
+
+/* Ссылка "Назад к входу" */
+.back-to-login {
+    display: inline-block;
+    margin-top: 20px;
+    font-family: 'Raleway', sans-serif;
+    font-weight: 500;
+    color: #50C878;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.back-to-login:hover {
+    text-decoration: underline;
+    transform: translateY(-1px);
+}

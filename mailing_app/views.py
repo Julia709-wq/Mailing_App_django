@@ -1,19 +1,21 @@
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.utils.decorators import method_decorator
+from django.utils import timezone
 from django.views.decorators.cache import cache_page
 from django.core.cache import cache
 
-from .models import Recipient, Message, Mailing
+from .models import Recipient, Message, Mailing, MailingAttempt
 from .forms import RecipientForm, MessageForm, MailingForm
-from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView
+from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView, View
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 
+@cache_page(60 * 5)
 def main_menu(request):
+    now = timezone.now()
     total_mailings = Mailing.objects.count()
-    active_mailings = Mailing.objects.filter(status='Запущена').count()
+    active_mailings = Mailing.objects.filter(start_time__lte=now, end_time__gte=now, status=Mailing.STATUS_RUNNING).count()
     unique_recipients = Recipient.objects.count()
 
     context = {
@@ -25,7 +27,6 @@ def main_menu(request):
     return render(request, 'mailing_app/main_menu.html', context)
 
 
-@method_decorator(cache_page(60 * 15), name='dispatch')
 class RecipientListView(LoginRequiredMixin, ListView):
     model = Recipient
     template_name = 'mailing_app/recipients/recipient_list.html'
@@ -50,10 +51,7 @@ class RecipientCreateView(LoginRequiredMixin, CreateView):
         return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
-        recipient = form.save()
-        user = self.request.user
-        recipient.owner = user
-        recipient.save()
+        form.instance.owner = self.request.user
         return super().form_valid(form)
 
 
@@ -73,11 +71,15 @@ class RecipientUpdateView(LoginRequiredMixin, UpdateView):
         return super().dispatch(request, *args, **kwargs)
 
 
-@method_decorator(cache_page(60 * 15), name='dispatch')
 class RecipientDetailView(LoginRequiredMixin, DetailView):
     model = Recipient
     template_name = 'mailing_app/recipients/recipient_detail.html'
     context_object_name = 'recipient'
+
+    def get_object(self, queryset=None):
+        obj = super().get_object(queryset)
+        obj.update_status()
+        return obj
 
     def dispatch(self, request, *args, **kwargs):
         obj = self.get_object()
@@ -101,7 +103,6 @@ class RecipientDeleteView(LoginRequiredMixin, DeleteView):
         return obj
 
 
-@method_decorator(cache_page(60 * 15), name='dispatch')
 class MessageListView(LoginRequiredMixin, ListView):
     model = Message
     template_name = 'mailing_app/messages/messages_list.html'
@@ -126,10 +127,7 @@ class MessageCreateView(LoginRequiredMixin, CreateView):
         return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
-        message = form.save()
-        user = self.request.user
-        message.owner = user
-        message.save()
+        form.instance.owner = self.request.user
         return super().form_valid(form)
 
 
@@ -149,11 +147,15 @@ class MessageUpdateView(LoginRequiredMixin, UpdateView):
         return super().dispatch(request, *args, **kwargs)
 
 
-@method_decorator(cache_page(60 * 15), name='dispatch')
 class MessageDetailView(LoginRequiredMixin, DetailView):
     model = Message
     template_name = 'mailing_app/messages/message_detail.html'
     context_object_name = 'message'
+
+    def get_object(self, queryset=None):
+        obj = super().get_object(queryset)
+        obj.update_status()
+        return obj
 
     def dispatch(self, request, *args, **kwargs):
         obj = self.get_object()
@@ -177,7 +179,6 @@ class MessageDeleteView(LoginRequiredMixin, DeleteView):
         return obj
 
 
-@method_decorator(cache_page(60 * 15), name='dispatch')
 class MailingListView(LoginRequiredMixin, ListView):
     model = Mailing
     template_name = 'mailing_app/mailings/mailings_list.html'
@@ -201,11 +202,13 @@ class MailingCreateView(LoginRequiredMixin, CreateView):
             raise PermissionDenied("У Вас нет прав для создания рассылки.")
         return super().dispatch(request, *args, **kwargs)
 
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
+
     def form_valid(self, form):
-        mailing = form.save()
-        user = self.request.user
-        mailing.owner = user
-        mailing.save()
+        form.instance.owner = self.request.user
         return super().form_valid(form)
 
 
@@ -214,6 +217,11 @@ class MailingUpdateView(LoginRequiredMixin, UpdateView):
     form_class = MailingForm
     template_name = 'mailing_app/mailings/mailing_form.html'
     success_url = reverse_lazy('mailing_app:mailings_list')
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
 
     def dispatch(self, request, *args, **kwargs):
         obj = self.get_object()
@@ -225,17 +233,20 @@ class MailingUpdateView(LoginRequiredMixin, UpdateView):
         return super().dispatch(request, *args, **kwargs)
 
 
-@method_decorator(cache_page(60 * 15), name='dispatch')
 class MailingDetailView(LoginRequiredMixin, DetailView):
     model = Mailing
     template_name = 'mailing_app/mailings/mailing_detail.html'
     context_object_name = 'mailing'
 
+    def get_object(self, queryset=None):
+        obj = super().get_object(queryset)
+        obj.update_status()
+        return obj
+
     def dispatch(self, request, *args, **kwargs):
         obj = self.get_object()
         if request.user.role == 'owner' and obj.owner != request.user:
             raise PermissionDenied("Вы не можете просматривать чужие рассылки.")
-
         return super().dispatch(request, *args, **kwargs)
 
 
@@ -253,4 +264,20 @@ class MailingDeleteView(LoginRequiredMixin, DeleteView):
         return obj
 
 
+class MailingAttemptListView(LoginRequiredMixin, ListView):
+    model = MailingAttempt
+    template_name = 'mailing_app/mailing_attempts.html'
+    context_object_name = 'attempts'
+
+    def get_queryset(self):
+        return MailingAttempt.objects.select_related('mailing__owner').order_by('-attempt_time')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        queryset = self.get_queryset()
+
+        context['total_attempts'] = queryset.count()
+        context['successful_attempts'] = queryset.filter(status='success').count()
+        context['failed_attempts'] = queryset.filter(status='fail').count()
+        return context
 

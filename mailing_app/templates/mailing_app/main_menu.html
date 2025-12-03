@@ -16,6 +16,10 @@
             <a href="{% url 'mailing_app:recipient_list' %}" class="menu-btn">Получатели</a>
             <a href="{% url 'mailing_app:messages_list' %}" class="menu-btn">Сообщения</a>
             <a href="{% url 'mailing_app:mailings_list' %}" class="menu-btn">Рассылки</a>
+            {% if user.is_authenticated and user.role == 'manager' %}
+                <a href="{% url 'users:user_list' %}" class="menu-btn">Список пользователей</a>
+            {% endif %}
+            <a href="{% url 'mailing_app:mailing_attempts' %}" class="menu-btn">Отслеживание рассылок</a>
         </div>
 
         {% if user.is_authenticated %}
