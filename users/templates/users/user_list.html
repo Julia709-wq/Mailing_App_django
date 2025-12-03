@@ -1,0 +1,61 @@
+{% extends "mailing_app/base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="recipients-container">
+    <h1 class="recipients-title">Список пользователей</h1>
+
+    <div class="recipients-table">
+        <div class="table-header">
+            <div>ID</div>
+            <div>Email</div>
+            <div>Роль</div>
+            <div>Статус</div>
+            <div>Действия</div>
+        </div>
+
+        {% for user in users %}
+        <div class="table-row">
+            <div class="table-cell" data-label="ID">
+                <a href="{% url 'users:user_detail' user.pk %}" class="recipient-name-link">
+                    {{ user.id }}
+                </a>
+            </div>
+            <div class="table-cell" data-label="E-mail">{{ user.email }}</div>
+            <div class="table-cell" data-label="Роль">
+                {% if user.role == "owner" %}
+                    Пользователь
+                {% elif user.role == "manager" %}
+                    Менеджер
+                {% endif %}
+            </div>
+            <div class="table-cell" data-label="Статус">
+                {% if user.is_active %}
+                    <span class="status-active">Активен</span>
+                {% else %}
+                    <span class="status-blocked">Заблокирован</span>
+                {% endif %}
+            </div>
+            {% if request.user.role == "manager" and user != request.user %}
+            <div class="table-cell" data-label="Действия">
+                {% if user.is_active %}
+                    <form method="post" action="{% url 'users:deactivate_user' user.pk %}" class="inline-form">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-block">Блокировать</button>
+                    </form>
+                {% else %}
+                    <form method="post" action="{% url 'users:activate_user' user.pk %}" class="inline-form">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-activate">Разблокировать</button>
+                    </form>
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+    <div style="text-align: center;">
+        <a href="{% url 'mailing_app:main_menu' %}" class="back-btn">Назад в главное меню</a>
+    </div>
+</div>
+{% endblock %}

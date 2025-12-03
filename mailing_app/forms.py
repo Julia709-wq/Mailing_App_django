@@ -1,6 +1,5 @@
 from django import forms
 from django.utils import timezone
-
 from .models import Recipient, Message, Mailing
 
 
@@ -19,29 +18,40 @@ class MessageForm(forms.ModelForm):
 class MailingForm(forms.ModelForm):
     class Meta:
         model = Mailing
-        fields = ['finish_sending', 'status', 'message', 'recipients', ]
+        fields = ['start_time', 'end_time', 'status', 'message', 'recipients', ]
 
-    widgets = {
-        'finish_sending': forms.DateTimeInput(attrs={
-                'type': 'datetime-local',
-                'class': 'form-control',
-                'placeholder': 'дд.мм.гггг чч:мм',
-                'min': timezone.now().strftime('%Y-%m-%dT%H:%M')
-            }),
-        'recipients': forms.SelectMultiple(attrs={
-            'class': 'form-select',
-            'size': '5'
-        }),
-        'status': forms.Select(attrs={'class': 'form-control'}),
-    }
+        widgets = {
+            'start_time': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
+            'end_time': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
+            'recipients': forms.SelectMultiple(attrs={'size': '5'}),
+            'status': forms.Select(),
+        }
 
     def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)
         super().__init__(*args, **kwargs)
-        self.fields['finish_sending'].required = False
-        self.fields['finish_sending'].help_text = 'Формат: дд.мм.гггг чч:мм (например: 25.12.2024 14:30)'
-        self.fields['finish_sending'].label = 'Окончание отправки (необязательно)'
+        self.fields['start_time'].required = True
+        self.fields['end_time'].required = True
+        self.fields['recipients'].help_text = 'Для выбора нескольких получателей: Ctrl+клик (Windows) или Cmd+клик (Mac)'
 
-        self.fields['recipients'].queryset = Recipient.objects.all()
-        self.fields[
-            'recipients'].help_text = 'Для выбора нескольких получателей: Ctrl+клик (Windows) или Cmd+клик (Mac)'
+        if user is not None:
+            if hasattr(user, 'role') and user.role == 'owner':
+                self.fields['recipients'].queryset = Recipient.objects.filter(owner=user)
+            else:
+                self.fields['recipients'].queryset = Recipient.all()
+        else:
+            self.fields['recipients'].queryset = Recipient.objects.all()
 
+
+    def clean(self):
+        """Валидация времени начала и окончания"""
+        cleaned = super().clean()
+        start = cleaned.get('start_time')
+        end = cleaned.get('end_time')
+        now = timezone.now()
+
+        if start and start < now:
+            self.add_error('start_time', 'Время начала должно быть в прошлом.')
+        if start and end and start >= end:
+            self.add_error('end_time', 'Время окончания должно быть позже времени начала.')
+        return cleaned

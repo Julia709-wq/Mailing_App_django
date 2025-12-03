@@ -1,8 +1,10 @@
 from django.db import models
+from django.utils import timezone
 from users.models import User
 
 
 class Recipient(models.Model):
+    """Модель получателя"""
     email = models.EmailField(unique=True)
     name = models.CharField(max_length=300, verbose_name='Ф.И.О.')
     comment = models.TextField(null=True, blank=True)
@@ -17,6 +19,7 @@ class Recipient(models.Model):
 
 
 class Message(models.Model):
+    """Модель сообщения"""
     topic = models.CharField(max_length=200, verbose_name='Тема письма')
     body = models.TextField()
     owner = models.ForeignKey(User, verbose_name='Владелец', blank=True, null=True, on_delete=models.SET_NULL)
@@ -30,38 +33,64 @@ class Message(models.Model):
 
 
 class Mailing(models.Model):
+    """Модель рассылки"""
+    STATUS_CREATED = 'Создана'
+    STATUS_RUNNING = 'Запущена'
+    STATUS_FINISHED = 'Завершена'
+
     STATUS_CHOICES = [
-        ('created', 'Создана'),
-        ('running', 'Запущена'),
-        ('finished', 'Завершена')
+        (STATUS_CREATED, 'Создана'),
+        (STATUS_RUNNING, 'Запущена'),
+        (STATUS_FINISHED, 'Завершена')
     ]
 
-    first_sending = models.DateTimeField(auto_now_add=True)
-    finish_sending = models.DateTimeField(null=True, blank=True)
-    status = models.CharField(max_length=50, choices=STATUS_CHOICES, default='created')
+    start_time = models.DateTimeField(verbose_name='Время начала')
+    end_time = models.DateTimeField(verbose_name='Время окончания')
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='created')
+
     message = models.ForeignKey(Message, verbose_name='Сообщение', blank=True, null=True, on_delete=models.SET_NULL)
-    recipients = models.ManyToManyField(Recipient, verbose_name='Получатель')
+    recipients = models.ManyToManyField(Recipient, verbose_name='Получатели')
     owner = models.ForeignKey(User, verbose_name='Владелец', blank=True, null=True, on_delete=models.SET_NULL)
 
     def __str__(self):
-        return f"{self.get_status_display()} ({self.first_sending:%Y-%m-%d})"
+        return f"{self.get_status_display()} ({self.start_time:%Y-%m-%d %H:%M})"
 
     class Meta:
         verbose_name = 'рассылка'
         verbose_name_plural = 'рассылки'
 
+    def current_status(self):
+        """Определение статуса в зависимости от времени"""
+        now = timezone.now()
+        if now < self.start_time:
+            return self.STATUS_CREATED
+        if self.start_time <= now <= self.end_time:
+            return self.STATUS_RUNNING
+        return self.STATUS_FINISHED
+
+    def update_status(self):
+        """Изменение статуса"""
+        new_status = self.current_status()
+        if self.status != new_status:
+            self.status = new_status
+            self.save(update_fields=['status'])
+
 
 class MailingAttempt(models.Model):
+    """Модель попытки рассылки"""
+    STATUS_SUCCESS = 'Успешно'
+    STATUS_FAIL = 'Не успешно'
+
     STATUS_CHOICES = [
-        ('success', 'Успешно'),
-        ('fail', 'Неудачно')
+        (STATUS_SUCCESS, 'Успешно'),
+        (STATUS_FAIL, 'Неудачно')
     ]
 
-    mailing = models.ForeignKey('Mailing', on_delete=models.CASCADE, related_name='рассылка')
-    recipient = models.ForeignKey('Recipient', on_delete=models.CASCADE)
-    status = models.CharField(choices=STATUS_CHOICES)
+    mailing = models.ForeignKey(Mailing, on_delete=models.CASCADE, related_name='attempts')
+    recipient = models.ForeignKey(Recipient, on_delete=models.CASCADE)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES)
     server_response = models.TextField(blank=True, null=True)
-    attemted_at = models.DateTimeField(auto_now_add=True)
+    attempt_time = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"{self.mailing} -> {self.recipient.email} ({self.status})"
