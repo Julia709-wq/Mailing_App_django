@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="email-verification-container">
+    <div class="email-verification-box">
+        <h2 class="email-verification-title">Подтверждение email</h2>
+        <p class="email-verification-message">
+            На ваш email отправлено письмо для подтверждения. Пожалуйста, проверьте почту и перейдите по ссылке для активации аккаунта.
+        </p>
+        <a href="{% url 'users:login' %}" class="email-verification-btn">Перейти к входу</a>
+    </div>
+</div>
+{% endblock %}
